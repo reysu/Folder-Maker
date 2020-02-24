@@ -2,12 +2,14 @@ import os
 #makes folders with a depth that you set
 #expands breath first
 cwd = os.getcwd();
+folders = int(input("How many folders do you want to make: "));
+depth  = int(input("What depth do you want: "));
+
 print (cwd);
-def makefolders():
-    for x in range(4):
+def makefolders(folders):
+    for x in range(folders):
         os.mkdir(str(x));
 
-makefolders();
 
 #brute force method (depth 3)
 '''
@@ -28,15 +30,34 @@ for z in range (4):
     os.chdir("..");
 '''
 
-def recurse(x, cwd):
-    if(x == 3):
+def recurse(d, cwd):
+    if(d == depth):
         os.chdir("..");
-        return x;
-    for z in range (4):
+        return d;
+    for z in range (folders):
         os.chdir(cwd + "/" + str(z));
         print("Z: " + str(os.getcwd()) );
-        makefolders();
-        recurse(x+1, os.getcwd());
+        makefolders(folders);
+        recurse(d+1, os.getcwd());
     os.chdir("..");
 
-recurse(0, os.getcwd());
+
+#makefolders(folders);
+#recurse(0, os.getcwd());
+#print (cwd);
+
+def make(cd, dp):
+    if (dp == depth):
+        return;
+    for z in range (folders):
+        try:
+            os.mkdir(cd + "/" + str(z));
+            print(str(cd + "/" + str(z)));
+            make(cd + "/" + str(z) , dp + 1);
+        except FileExistsError:
+            next;
+make(cwd, 0);
+
+
+
+print("Done.")
